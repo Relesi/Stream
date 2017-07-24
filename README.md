@@ -1,22 +1,53 @@
-4)	O que é Deadlock? Detalhe um pouco sobre o caso e como você poderia resolver isso. (5 pontos)
-
-R: 
-
-É sememlhante a fila que estamos acostumados a ver caso C.
-Um processo de bloqueio, de espera ou de interrupção em processos diferentes.
-Para evitar isso temos que nos orientar sobre LOOPS e tranzações remetidas em SGBD irregular. 
+Stream-API
 
 
-5)	Uma das grandes inclusões no Java 8 foi a API Stream. 
-Com ela podemos fazer diversas operações de loop, filtros, maps, etc.
- Porém, existe uma variação bem interessante do Stream que é ParallelStreams. 
- Descreva com suas palavras quando qual é a diferença entre os dois e quando devemos utilizar cada um deles. (5 pontos)
+[![](http://javadoc-badge.appspot.com/com.annimon/stream.svg?label=JavaDocs)](http://www.javadoc.io/doc/com.annimon/stream/)
 
-R:
+### Inclue
 
-Maneira aleatória de separar o processo e dividir o trafego e o processo de dados e informações.
-A API Stream é uma maneira de filtrar dados e processar e retornalas de acordo com a necessidade, trazendo assim
-somente o necessário, fazendo o processo de API's um tanto mais rápido, algo que dependendo da estrutura e configuração, 
-tornava o processo do Java na JVM um tanto demorado.
-Resumindo o entendimento que ParallelStreams, quebra o processo em várias partes e usa um Thread para anexar os pedaços 
-e excutar a palicção de modo mais eficiente.
+ + Functional interfaces (`Supplier`, `Function`, `Consumer` etc);
+ + `Stream`/`IntStream`/`LongStream`/`DoubleStream` (without parallel processing, but with a variety of additional methods and with custom operators);
+ + `Optional`/`OptionalBoolean`/`OptionalInt`/`OptionalLong`/`OptionalDouble` classes;
+ + `Exceptional` class - functional way to deal with exceptions;
+ + `Objects` from Java 7.
+
+
+### Uso
+
+```java
+Stream.of(/* array | list | set | map | anything based on Iterator/Iterable interface */)
+    .filter(..)
+    .map(..)
+    ...
+    .sorted()
+    .forEach(..);
+Stream.of(value1, value2, value3)...
+IntStream.range(0, 10)...
+```
+Example project: https://github.com/aNNiMON/Android-Java-8-Stream-Example
+
+
+## Caracteristicas principais
+
+### Operadores personalizados
+
+Ao contrário dos fluxos Java 8, Stream-API oferece a capacidade de aplicar operadores personalizados.
+
+```java
+Stream.of(...)
+    .custom(new Reverse<>())
+    .forEach(...);
+
+public final class Reverse<T> implements UnaryOperator<Stream<T>> {
+
+    @Override
+    public Stream<T> apply(Stream<T> stream) {
+        final Iterator<? extends T> iterator = stream.getIterator();
+        final ArrayDeque<T> deque = new ArrayDeque<T>();
+        while (iterator.hasNext()) {
+            deque.addFirst(iterator.next());
+        }
+        return Stream.of(deque.iterator());
+    }
+}
+```
