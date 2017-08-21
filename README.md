@@ -10,6 +10,13 @@ Stream-API
  + `Optional`/`OptionalBoolean`/`OptionalInt`/`OptionalLong`/`OptionalDouble` classes;
  + `Exceptional` class - functional way to deal with exceptions;
  + `Objects` from Java 7.
+ 
+### Funções Faturamento 
+
+ + Conta
+ + Crédito
+ + Débito
+ 
 
 
 ### Uso
